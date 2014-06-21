@@ -1,0 +1,19 @@
+{
+  "name": "node-ci",
+  "version": "0.0.0",
+  "description": "node ci",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test-cov"
+  },
+  "author": "Lloyd Benson",
+  "license": "MIT",
+  "dependencies": {
+    "hapi": "6.x.x",
+    "joi": "4.x.x",
+    "hoek": "2.x.x"
+  },
+  "devDependencies": {
+    "lab": "3.x.x"
+  }
+}
