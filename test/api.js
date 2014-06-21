@@ -46,6 +46,17 @@ describe('api', function () {
         });
     });
 
+    it('GET /api/job/id/run', function (done) {
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/id/run'}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
     it('POST /api/job', function (done) {
         internals.prepareServer(function (server) {
             server.inject({ method: 'POST', url: '/api/job'}, function (response) {
