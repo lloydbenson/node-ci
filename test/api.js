@@ -57,6 +57,28 @@ describe('api', function () {
         });
     });
 
+    it('GET /api/job/id/run/id', function (done) {
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/id/run/id'}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('GET /api/job/id/run/id/cancel', function (done) {
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/id/run/id/cancel'}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
     it('POST /api/job', function (done) {
         internals.prepareServer(function (server) {
             server.inject({ method: 'POST', url: '/api/job'}, function (response) {
