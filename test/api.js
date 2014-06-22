@@ -108,7 +108,7 @@ describe('api', function () {
         });
     });
 
-    it('DELETE /api/job/id', function (done) {
+    it('DELETE /api/job/{job_id}', function (done) {
         var job_id = 1;
         internals.prepareServer(function (server) {
             server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
