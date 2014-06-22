@@ -35,9 +35,10 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/id', function (done) {
+    it('GET /api/job/{job_id}', function (done) {
+        var job_id = 1;
         internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/id'}, function (response) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -46,9 +47,10 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/id/run', function (done) {
+    it('GET /api/job/{job_id}/run', function (done) {
+        var job_id = 1;
         internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/id/run'}, function (response) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -57,9 +59,11 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/id/run/id', function (done) {
+    it('GET /api/job/{job_id}/run/{run_id}', function (done) {
+        var job_id = 1;
+        var run_id = 1;
         internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/id/run/id'}, function (response) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -68,9 +72,11 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/id/run/id/cancel', function (done) {
+    it('GET /api/job/{job_id}/run/{run_id}/cancel', function (done) {
+        var job_id = 1;
+        var run_id = 1;
         internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/id/run/id/cancel'}, function (response) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/cancel' }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -90,9 +96,10 @@ describe('api', function () {
         });
     });
 
-    it('POST /api/job/id', function (done) {
+    it('POST /api/job/{job_id}', function (done) {
+        var job_id = 1;
         internals.prepareServer(function (server) {
-            server.inject({ method: 'POST', url: '/api/job/id'}, function (response) {
+            server.inject({ method: 'POST', url: '/api/job/'+ job_id }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -102,8 +109,9 @@ describe('api', function () {
     });
 
     it('DELETE /api/job/id', function (done) {
+        var job_id = 1;
         internals.prepareServer(function (server) {
-            server.inject({ method: 'DELETE', url: '/api/job/id'}, function (response) {
+            server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
