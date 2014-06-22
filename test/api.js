@@ -85,6 +85,19 @@ describe('api', function () {
         });
     });
 
+    it('GET /api/job/{job_id}/run/{run_id}/console', function (done) {
+        var job_id = 1;
+        var run_id = 1;
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/console' }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
     it('POST /api/job', function (done) {
         internals.prepareServer(function (server) {
             server.inject({ method: 'POST', url: '/api/job'}, function (response) {
