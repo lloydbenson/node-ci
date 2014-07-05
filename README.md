@@ -42,3 +42,12 @@ dont want to remove the others (reset flag to clear data if thats what you reall
 // how do we extend building blocks for use (before, after)
 
 // how do we want to handle initial auth -- local might be annoying unless theres a great easy module to do this already should be lightweight json friendly etc // utilize bell here?
+
+// have register slave function (esp important for windows) so the master doesn't have to talk to the slave to be useful
+// need master/slave grouping (os partitioning, speciality function)
+// child count auto but overridable (1 per cpu?)
+
+// use queue (add, filter for slave) // this would be the abtract to add to slaves
+
+
+
