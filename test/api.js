@@ -28,6 +28,8 @@ describe('api', function () {
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/jobs'}, function (response) {
 
+                console.log(response);
+
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
                 done();
