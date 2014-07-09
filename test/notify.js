@@ -19,7 +19,7 @@ describe('notify', function () {
             job_id: 1,
             run_id: 1,
             subject: 'test',
-            recipients: [ 'lloydbenson@gmail.com', 'backer@gmail.com' ];
+            recipients: [ 'lloydbenson@gmail.com', 'backer@gmail.com' ],
             body: 'this is a body of text',
             host: 'localhost',
             port: 25
