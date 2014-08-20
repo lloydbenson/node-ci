@@ -14,7 +14,7 @@ internals.prepareServer = function (callback) {
 
     server.pack.register({
 
-        plugin: require('../')
+        plugin: require('../..')
     }, function (err) {
 
         expect(err).to.not.exist;
@@ -28,15 +28,13 @@ describe('api', function () {
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/jobs'}, function (response) {
 
-                console.log(response);
-
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
                 done();
             });
         });
     });
-
+/*
     it('GET /api/job/{job_id}', function (done) {
         var job_id = 1;
         internals.prepareServer(function (server) {
@@ -48,19 +46,8 @@ describe('api', function () {
             });
         });
     });
-
-    it('GET /api/job/{job_id}/run', function (done) {
-        var job_id = 1;
-        internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                done();
-            });
-        });
-    });
-
+*/
+/*
     it('GET /api/job/{job_id}/run/{run_id}', function (done) {
         var job_id = 1;
         var run_id = 1;
@@ -100,9 +87,12 @@ describe('api', function () {
         });
     });
 
+*/
+
     it('POST /api/job', function (done) {
         internals.prepareServer(function (server) {
-            server.inject({ method: 'POST', url: '/api/job'}, function (response) {
+            var payload = { name: "testjob", pre: "date", command: "date", post: "date" };
+            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -110,6 +100,20 @@ describe('api', function () {
             });
         });
     });
+
+    it('GET /api/job/{job_id}/run', function (done) {
+        var job_id = 1;
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
+/*
 
     it('POST /api/job/{job_id}', function (done) {
         var job_id = 1;
@@ -134,4 +138,5 @@ describe('api', function () {
             });
         });
     });
+*/
 });

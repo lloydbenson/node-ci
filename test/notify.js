@@ -24,8 +24,20 @@ describe('notify', function () {
             host: 'localhost',
             port: 25
         };
-        Notify.notify(notify);
-        //expect(Notify.status).to.equal('success');
+        var expectedResult = '{"status":"success"}';
+        var status = JSON.stringify(Notify.notify(notify));
+        expect(status).to.equal(expectedResult);
+        done();
+    });
+
+    it('invalid', function (done) {
+
+        var notify = {
+            type: 'invalid'
+        };
+        var expectedResult = '{"status":"failed","message":"no valid notify type"}';
+        var status = JSON.stringify(Notify.notify(notify));
+        expect(status).to.equal(expectedResult);
         done();
     });
 });

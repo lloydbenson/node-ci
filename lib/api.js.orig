@@ -1,5 +1,7 @@
-var Fs = require('fs');
+module.exports.Job = require('./api/job'); 
+module.exports.Run = require('./api/run'); 
 
+/*
 exports.getJobs = function (request,reply) {
 
    var jobs = [1,2];
@@ -18,34 +20,23 @@ exports.createJob = function (request,reply) {
           include_prs: true,
           branch: 'origin/master'
        },
-       pre: request.payload.pre,
-       command: request.payload.command,
-       post: request.payload.post,
-/*
        commands: [
           [ { command: 'parallelcommand1' }, { command: 'parallelcommand2' } ],
           { command: 'serialcommand3' },
           [ { command: 'parallelcommand4' }, { command: 'parallelcommand5' } ]
        ],
-*/
        runs: [],
        created: 'time',
        updated: 'time'
    };
 
-   // generate uuid uniquely?
    var job_id = 1;
-
-   var file="/tmp/job_"+job_id+".json";
-   Fs.writeFileSync(file,JSON.stringify(job,null,3));
 
    var response = {
        job_id: job_id,
-       job: job,
+       statusCode: 200,
        message: 'created'
    };
-   //console.log(response);
-
    reply(response);
 };
 
@@ -81,3 +72,55 @@ exports.getJob = function (request,reply) {
        
    reply(response);
 };
+
+exports.startRun = function (request,reply) {
+   // execute job from id and give back status, elapsed time, run id, need to pass optional timeout
+   var response = {
+       job_id: request.params.job_id,
+       run: {
+           run_id: 1,
+           status: 'running',
+           created: 'time'
+       }
+   }
+   reply(response);
+};
+
+exports.cancelRun = function (request,reply) {
+
+   var response = {
+       job_id: request.params.job_id,
+       run: {
+           run_id: request.params.run_id,
+           status: 'cancelled',
+           elapsed: 'time',
+           created: 'time'
+       }
+   }
+   reply(response);
+};
+
+exports.getConsole = function (request,reply) {
+
+   var response = {
+       job_id: request.params.job_id,
+       run_id: request.params.run_id,
+       console: 'some output'
+   }
+   reply(response);
+};
+
+exports.getRun = function (request,reply) {
+
+   var response = {
+       job_id: request.params.job_id,
+       run: {
+           run_id: request.params.run_id,
+           status: 'running',
+           elapsed: 'time',
+           created: 'time'
+       }
+   }
+   reply(response);
+};
+*/
