@@ -9,6 +9,7 @@
   "author": "Lloyd Benson",
   "license": "MIT",
   "dependencies": {
+    "async": "0.9.x",
     "github": "0.2.0",
     "hapi": "6.x.x",
     "hoek": "2.x.x",
