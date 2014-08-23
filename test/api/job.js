@@ -47,7 +47,7 @@ describe('api', function () {
         });
     });
 */
-/*
+
     it('GET /api/job/{job_id}/run/{run_id}', function (done) {
         var job_id = 1;
         var run_id = 1;
@@ -60,7 +60,7 @@ describe('api', function () {
             });
         });
     });
-
+/*
     it('GET /api/job/{job_id}/run/{run_id}/cancel', function (done) {
         var job_id = 1;
         var run_id = 1;
@@ -73,7 +73,7 @@ describe('api', function () {
             });
         });
     });
-
+*/
     it('GET /api/job/{job_id}/run/{run_id}/console', function (done) {
         var job_id = 1;
         var run_id = 1;
@@ -81,13 +81,11 @@ describe('api', function () {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/console' }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
+                expect(response.result.console).to.exist;
                 done();
             });
         });
     });
-
-*/
 
     it('POST /api/job', function (done) {
         internals.prepareServer(function (server) {
@@ -107,7 +105,7 @@ describe('api', function () {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
                 expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
+                expect(response.result.created).to.exist;
                 done();
             });
         });
