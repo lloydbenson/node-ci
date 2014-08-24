@@ -4,11 +4,12 @@ var Utils = require('../../lib/utils')
 
 var internals = {};
 
+var lab = exports.lab = Lab.script();
 var expect = Lab.expect;
-var before = Lab.before;
-var after = Lab.after;
-var describe = Lab.experiment;
-var it = Lab.test;
+var before = lab.before;
+var after = lab.after;
+var describe = lab.describe;
+var it = lab.it;
 
 internals.prepareServer = function (callback) {
     var server = new Hapi.Server();
@@ -23,7 +24,7 @@ internals.prepareServer = function (callback) {
     });
 };
 
-    describe('api', function () {
+describe('api', function () {
 
     
 /*
