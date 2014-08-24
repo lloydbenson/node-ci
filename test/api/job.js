@@ -54,7 +54,7 @@ internals.prepareServer = function (callback) {
 */
     it('POST /api/job', function (done) {
         internals.prepareServer(function (server) {
-            var payload = { name: "testjob", pre: "date", command: "date", post: "date" };
+            var payload = { name: "testjob", pre: "date", command: "uptime", post: "cat /etc/hosts" };
             server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
