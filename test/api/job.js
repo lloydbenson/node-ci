@@ -24,21 +24,8 @@ internals.prepareServer = function (callback) {
     });
 };
 
-describe('api', function () {
-
-    
+describe('api', function () {    
 /*
-    it('GET /api/job/{job_id}', function (done) {
-        var job_id = 1;
-        internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/'+ job_id }, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                done();
-            });
-        });
-    });
 
     it('GET /api/job/{job_id}/run/{run_id}/cancel', function (done) {
         var job_id = 1;
@@ -57,6 +44,18 @@ describe('api', function () {
         internals.prepareServer(function (server) {
             var payload = { name: "testjob", pre: "date", command: "uptime", post: "cat /etc/hosts" };
             server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('GET /api/job/{job_id}', function (done) {
+        var job_id = 1;
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
