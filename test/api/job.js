@@ -1,13 +1,15 @@
 var Lab = require('lab');
 var Hapi = require('hapi');
+var Utils = require('../../lib/utils')
 
 var internals = {};
 
+var lab = exports.lab = Lab.script();
 var expect = Lab.expect;
-var before = Lab.before;
-var after = Lab.after;
-var describe = Lab.experiment;
-var it = Lab.test;
+var before = lab.before;
+var after = lab.after;
+var describe = lab.describe;
+var it = lab.it;
 
 internals.prepareServer = function (callback) {
     var server = new Hapi.Server();
@@ -21,12 +23,15 @@ internals.prepareServer = function (callback) {
         callback(server);
     });
 };
-    
-describe('api', function () {
 
-    it('GET /api/jobs', function (done) {
+describe('api', function () {    
+/*
+
+    it('GET /api/job/{job_id}/run/{run_id}/cancel', function (done) {
+        var job_id = 1;
+        var run_id = 1;
         internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/jobs'}, function (response) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/cancel' }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -34,7 +39,19 @@ describe('api', function () {
             });
         });
     });
-/*
+*/
+    it('POST /api/job', function (done) {
+        internals.prepareServer(function (server) {
+            var payload = { name: "testjob", pre: "date", command: "uptime", post: "cat /etc/hosts" };
+            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
     it('GET /api/job/{job_id}', function (done) {
         var job_id = 1;
         internals.prepareServer(function (server) {
@@ -46,26 +63,24 @@ describe('api', function () {
             });
         });
     });
-*/
-/*
-    it('GET /api/job/{job_id}/run/{run_id}', function (done) {
+
+    it('GET /api/job/{job_id}/run', function (done) {
         var job_id = 1;
-        var run_id = 1;
         internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
                 expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
+                expect(response.result.created).to.exist;
                 done();
             });
         });
     });
 
-    it('GET /api/job/{job_id}/run/{run_id}/cancel', function (done) {
+    it('GET /api/job/{job_id}/run/{run_id}', function (done) {
         var job_id = 1;
         var run_id = 1;
         internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/cancel' }, function (response) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -81,18 +96,15 @@ describe('api', function () {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/console' }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
+                expect(response.result.console).to.exist;
                 done();
             });
         });
     });
 
-*/
-
-    it('POST /api/job', function (done) {
+    it('GET /api/jobs', function (done) {
         internals.prepareServer(function (server) {
-            var payload = { name: "testjob", pre: "date", command: "date", post: "date" };
-            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+            server.inject({ method: 'GET', url: '/api/jobs'}, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -101,17 +113,6 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/{job_id}/run', function (done) {
-        var job_id = 1;
-        internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                done();
-            });
-        });
-    });
 
 /*
 
