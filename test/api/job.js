@@ -1,6 +1,5 @@
 var Lab = require('lab');
 var Hapi = require('hapi');
-var Utils = require('../../lib/utils')
 
 var internals = {};
 
@@ -47,6 +46,7 @@ describe('api', function () {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
+                expect(response.result.job_id).to.exist;
                 done();
             });
         });
