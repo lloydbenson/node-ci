@@ -1,6 +1,6 @@
 {
   "name": "node-ci",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "node ci",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,8 @@
     "github": "0.2.0",
     "hapi": "6.x.x",
     "hoek": "2.x.x",
-    "joi": "4.x.x"
+    "joi": "4.x.x",
+    "node-uuid": "1.4.x"
   },
   "devDependencies": {
     "lab": "4.x.x"
