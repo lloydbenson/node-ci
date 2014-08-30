@@ -39,9 +39,41 @@ describe('api', function () {
         });
     });
 */
-    it('POST /api/job', function (done) {
+
+    it('POST /api/job no SCM', function (done) {
         internals.prepareServer(function (server) {
-            var payload = { name: "testjob", pre: "date", command: "uptime", post: "cat /etc/hosts" };
+
+            var payload = {
+                name: "testjob",
+                pre: "date",
+                command: "uptime",
+                post: "cat /etc/hosts"
+            };
+            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                expect(response.result.job_id).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('POST /api/job with git', function (done) {
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                name: "testjob",
+                scm: {
+                    type: 'github',
+                    url: 'git@github.com:lloydbenson/node-ci',
+                    prs: true,
+                    branch: 'origin/master'
+                },
+                pre: "date",
+                command: "uptime",
+                post: "cat /etc/hosts"
+            };
             server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
@@ -97,6 +129,31 @@ describe('api', function () {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.console).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('DELETE /api/job/{job_id}/run/{run_id}', function (done) {
+        var job_id = 1;
+        var run_id = 1;
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'DELETE', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('DELETE /api/job/{job_id}', function (done) {
+        var job_id = 1;
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
                 done();
             });
         });
