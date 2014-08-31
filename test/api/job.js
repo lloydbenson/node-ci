@@ -138,9 +138,12 @@ describe('api', function () {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
                 var latest_id = Store.getRunByLabel(job_id, 'latest');
+                var success_id = Store.getRunByLabel(job_id, 'success');
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.run_id).to.exist;
                 expect(response.result.run_id.toString()).to.equal(latest_id);
+                expect(response.result.run_id.toString()).to.equal(success_id);
+
                 done();
             });
         });
