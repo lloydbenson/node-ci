@@ -137,7 +137,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
-                var latest_id = Store.getLatestRun(job_id);
+                var latest_id = Store.getRunByLabel(job_id, 'latest');
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.run_id).to.exist;
                 expect(response.result.run_id.toString()).to.equal(latest_id);
@@ -146,9 +146,22 @@ describe('api', function () {
         });
     });
 
+    it('GET /api/job/{job_id}/runs', function (done) {
+
+        var job_id = Store.getJobConfigByName('noscm');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/' + job_id + '/runs'}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.result).to.have.length(2);
+                done();
+            });
+        });
+    });
+
     it('GET /api/job/{job_id}/run/{run_id} git', function (done) {
         var job_id = Store.getJobConfigByName('git');
-        var run_id = Store.getLatestRun(job_id);
+        var run_id = Store.getRunByLabel(job_id, 'latest');
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
 
@@ -161,7 +174,7 @@ describe('api', function () {
 
     it('GET /api/job/{job_id}/run/{run_id}/console git', function (done) {
         var job_id = Store.getJobConfigByName('git');
-        var run_id = Store.getLatestRun(job_id);
+        var run_id = Store.getRunByLabel(job_id, 'latest');
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/console' }, function (response) {
 
@@ -174,7 +187,7 @@ describe('api', function () {
 
     it('DELETE /api/job/{job_id}/run/{run_id} git', function (done) {
         var job_id = Store.getJobConfigByName('git');
-        var run_id = Store.getLatestRun(job_id);
+        var run_id = Store.getRunByLabel(job_id, 'latest');
         internals.prepareServer(function (server) {
             server.inject({ method: 'DELETE', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
 
