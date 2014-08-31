@@ -28,7 +28,7 @@ describe('api', function () {
 /*
 
     it('GET /api/job/{job_id}/run/{run_id}/cancel', function (done) {
-        var job_id = 1;
+        var job_id = Store.getJobConfigByName('git');
         var run_id = 1;
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/cancel' }, function (response) {
@@ -200,7 +200,7 @@ describe('api', function () {
 /*
 
     it('POST /api/job/{job_id}', function (done) {
-        var job_id = 1;
+        var job_id = Store.getJobConfigByName('git');
         internals.prepareServer(function (server) {
             server.inject({ method: 'POST', url: '/api/job/'+ job_id }, function (response) {
 
@@ -212,7 +212,7 @@ describe('api', function () {
     });
 
     it('DELETE /api/job/{job_id}', function (done) {
-        var job_id = 1;
+        var job_id = Store.getJobConfigByName('git');
         internals.prepareServer(function (server) {
             server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
 
