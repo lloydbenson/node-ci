@@ -90,7 +90,7 @@ describe('api', function () {
             server.inject({ method: 'GET', url: '/api/jobs'}, function (response) {
 
                 expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
+                expect(response.result).to.have.length(2);
                 done();
             });
         });
