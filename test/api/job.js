@@ -132,7 +132,7 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/{job_id}/run noscm latest', function (done) {
+    it('GET /api/job/{job_id}/run noscm labels', function (done) {
         var job_id = Store.getJobConfigByName('noscm');
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
@@ -143,7 +143,6 @@ describe('api', function () {
                 expect(response.result.run_id).to.exist;
                 expect(response.result.run_id.toString()).to.equal(latest_id);
                 expect(response.result.run_id.toString()).to.equal(success_id);
-
                 done();
             });
         });
