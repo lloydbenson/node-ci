@@ -40,52 +40,6 @@ describe('api', function () {
         });
     });
 */
-/*
-    it('POST /api/job nodelete', function (done) {
-        internals.prepareServer(function (server) {
-
-            var payload = {
-                name: "nodelete",
-                pre: "date",
-                command: "uptime",
-                post: "cat /etc/hosts"
-            };
-            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                expect(response.result.job_id).to.exist;
-                done();
-            });
-        });
-    });
-
-    it('GET /api/job/{job_id}/run nodelete', function (done) {
-        var job_id = Store.getJobConfigByName('nodelete');
-        internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.result.run_id).to.exist;
-                done();
-            });
-        });
-    });
-
-    it('GET /api/job/{job_id}/run/{run_id} git', function (done) {
-        var job_id = Store.getJobConfigByName('nodelete');
-        var run_id = Store.getLatestRun(job_id);
-        internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                done();
-            });
-        });
-    });
-*/
-
 
     it('POST /api/job noscm', function (done) {
         internals.prepareServer(function (server) {
@@ -173,6 +127,20 @@ describe('api', function () {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.run_id).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('GET /api/job/{job_id}/run noscm latest', function (done) {
+        var job_id = Store.getJobConfigByName('noscm');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
+
+                var latest_id = Store.getLatestRun(job_id);
+                expect(response.statusCode).to.equal(200);
+                expect(response.result.run_id).to.exist;
+                expect(response.result.run_id.toString()).to.equal(latest_id);
                 done();
             });
         });
