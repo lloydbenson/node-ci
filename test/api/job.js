@@ -1,5 +1,6 @@
 var Lab = require('lab');
 var Hapi = require('hapi');
+var Store = require('../../lib/store/file');
 
 var internals = {};
 
@@ -44,7 +45,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                name: "testjob",
+                name: "noscm",
                 pre: "date",
                 command: "uptime",
                 post: "cat /etc/hosts"
@@ -63,7 +64,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                name: "testjob",
+                name: "git",
                 scm: {
                     type: 'github',
                     url: 'git@github.com:lloydbenson/node-ci',
@@ -84,8 +85,19 @@ describe('api', function () {
         });
     });
 
+    it('GET /api/jobs', function (done) {
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/jobs'}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
     it('GET /api/job/{job_id}', function (done) {
-        var job_id = 1;
+        var job_id = Store.getJobConfigByName('git');
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id }, function (response) {
 
@@ -97,7 +109,7 @@ describe('api', function () {
     });
 
     it('GET /api/job/{job_id}/run', function (done) {
-        var job_id = 1;
+        var job_id = Store.getJobConfigByName('git');
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
@@ -109,7 +121,7 @@ describe('api', function () {
     });
 
     it('GET /api/job/{job_id}/run/{run_id}', function (done) {
-        var job_id = 1;
+        var job_id = Store.getJobConfigByName('git');
         var run_id = 1;
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
@@ -122,7 +134,7 @@ describe('api', function () {
     });
 
     it('GET /api/job/{job_id}/run/{run_id}/console', function (done) {
-        var job_id = 1;
+        var job_id = Store.getJobConfigByName('git');
         var run_id = 1;
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/console' }, function (response) {
@@ -135,7 +147,7 @@ describe('api', function () {
     });
 
     it('DELETE /api/job/{job_id}/run/{run_id}', function (done) {
-        var job_id = 1;
+        var job_id = Store.getJobConfigByName('git');
         var run_id = 1;
         internals.prepareServer(function (server) {
             server.inject({ method: 'DELETE', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
@@ -148,7 +160,7 @@ describe('api', function () {
     });
 
     it('DELETE /api/job/{job_id}', function (done) {
-        var job_id = 1;
+        var job_id = Store.getJobConfigByName('git');
         internals.prepareServer(function (server) {
             server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
 
@@ -159,9 +171,10 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/jobs', function (done) {
+        it('DELETE /api/job/{job_id}', function (done) {
+        var job_id = Store.getJobConfigByName('noscm');
         internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/jobs'}, function (response) {
+            server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
@@ -169,6 +182,7 @@ describe('api', function () {
             });
         });
     });
+
 
 
 /*
