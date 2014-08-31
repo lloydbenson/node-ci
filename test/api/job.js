@@ -41,7 +41,7 @@ describe('api', function () {
     });
 */
 
-    it('POST /api/job no SCM', function (done) {
+    it('POST /api/job noscm', function (done) {
         internals.prepareServer(function (server) {
 
             var payload = {
@@ -60,7 +60,7 @@ describe('api', function () {
         });
     });
 
-    it('POST /api/job with git', function (done) {
+    it('POST /api/job git', function (done) {
         internals.prepareServer(function (server) {
 
             var payload = {
@@ -96,7 +96,7 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/{job_id}', function (done) {
+    it('GET /api/job/{job_id} git', function (done) {
         var job_id = Store.getJobConfigByName('git');
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id }, function (response) {
@@ -108,7 +108,7 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/{job_id}/run', function (done) {
+    it('GET /api/job/{job_id}/run git', function (done) {
         var job_id = Store.getJobConfigByName('git');
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
@@ -120,7 +120,19 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/{job_id}/run/{run_id}', function (done) {
+    it('GET /api/job/{job_id}/run noscm', function (done) {
+        var job_id = Store.getJobConfigByName('noscm');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.result.created).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('GET /api/job/{job_id}/run/{run_id} git', function (done) {
         var job_id = Store.getJobConfigByName('git');
         var run_id = 1;
         internals.prepareServer(function (server) {
@@ -133,7 +145,7 @@ describe('api', function () {
         });
     });
 
-    it('GET /api/job/{job_id}/run/{run_id}/console', function (done) {
+    it('GET /api/job/{job_id}/run/{run_id}/console git', function (done) {
         var job_id = Store.getJobConfigByName('git');
         var run_id = 1;
         internals.prepareServer(function (server) {
@@ -146,7 +158,7 @@ describe('api', function () {
         });
     });
 
-    it('DELETE /api/job/{job_id}/run/{run_id}', function (done) {
+    it('DELETE /api/job/{job_id}/run/{run_id} git', function (done) {
         var job_id = Store.getJobConfigByName('git');
         var run_id = 1;
         internals.prepareServer(function (server) {
@@ -159,7 +171,7 @@ describe('api', function () {
         });
     });
 
-    it('DELETE /api/job/{job_id}', function (done) {
+    it('DELETE /api/job/{job_id} git', function (done) {
         var job_id = Store.getJobConfigByName('git');
         internals.prepareServer(function (server) {
             server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
@@ -171,7 +183,7 @@ describe('api', function () {
         });
     });
 
-        it('DELETE /api/job/{job_id}', function (done) {
+        it('DELETE /api/job/{job_id} noscm', function (done) {
         var job_id = Store.getJobConfigByName('noscm');
         internals.prepareServer(function (server) {
             server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
