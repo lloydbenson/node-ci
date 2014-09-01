@@ -41,6 +41,49 @@ describe('api', function () {
     });
 */
 
+    it('POST /api/job badcommand', function (done) {
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                name: "badcommand",
+                command: "uptim"
+            };
+            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                expect(response.result.job_id).to.exist;
+                done();
+            });
+        });
+    });
+    /*
+
+    it('GET /api/job/{job_id}/run badcommand', function (done) {
+        var job_id = Store.getJobConfigByName('badcommand');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.result.run_id).to.exist;
+                done();
+            });
+        });
+    });
+    */
+
+    it('DELETE /api/job/{job_id} badcommand', function (done) {
+        var job_id = Store.getJobConfigByName('badcommand');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
     it('POST /api/job noscm', function (done) {
         internals.prepareServer(function (server) {
 
@@ -212,7 +255,7 @@ describe('api', function () {
         });
     });
 
-        it('DELETE /api/job/{job_id} noscm', function (done) {
+    it('DELETE /api/job/{job_id} noscm', function (done) {
         var job_id = Store.getJobConfigByName('noscm');
         internals.prepareServer(function (server) {
             server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
