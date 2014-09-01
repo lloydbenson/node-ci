@@ -56,8 +56,7 @@ describe('api', function () {
                 done();
             });
         });
-    });
-    /*
+    });  
 
     it('GET /api/job/{job_id}/run badcommand', function (done) {
         var job_id = Store.getJobConfigByName('badcommand');
@@ -70,7 +69,6 @@ describe('api', function () {
             });
         });
     });
-    */
 
     it('DELETE /api/job/{job_id} badcommand', function (done) {
         var job_id = Store.getJobConfigByName('badcommand');
@@ -254,6 +252,7 @@ describe('api', function () {
             });
         });
     });
+
 
     it('DELETE /api/job/{job_id} noscm', function (done) {
         var job_id = Store.getJobConfigByName('noscm');
