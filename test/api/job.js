@@ -63,8 +63,10 @@ describe('api', function () {
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
+                var success_id = Store.getRunByLabel(job_id, 'success');
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.run_id).to.exist;
+                expect(success_id).to.not.exist;
                 done();
             });
         });
