@@ -63,10 +63,10 @@ describe('api', function () {
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
-                var success_id = Store.getRunByLabel(job_id, 'success');
+                var lastSuccess_id = Store.getRunByLabel(job_id, 'lastSuccess');
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.run_id).to.exist;
-                expect(success_id).to.not.exist;
+                expect(lastSuccess_id).to.not.exist;
                 done();
             });
         });
@@ -180,12 +180,12 @@ describe('api', function () {
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
-                var latest_id = Store.getRunByLabel(job_id, 'latest');
-                var success_id = Store.getRunByLabel(job_id, 'success');
+                var last_id = Store.getRunByLabel(job_id, 'last');
+                var lastSuccess_id = Store.getRunByLabel(job_id, 'lastSuccess');
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.run_id).to.exist;
-                expect(response.result.run_id.toString()).to.equal(latest_id);
-                expect(response.result.run_id.toString()).to.equal(success_id);
+                expect(response.result.run_id.toString()).to.equal(last_id);
+                expect(response.result.run_id.toString()).to.equal(lastSuccess_id);
                 done();
             });
         });
@@ -206,7 +206,7 @@ describe('api', function () {
 
     it('GET /api/job/{job_id}/run/{run_id} git', function (done) {
         var job_id = Store.getJobConfigByName('git');
-        var run_id = Store.getRunByLabel(job_id, 'latest');
+        var run_id = Store.getRunByLabel(job_id, 'last');
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
 
@@ -219,7 +219,7 @@ describe('api', function () {
 
     it('GET /api/job/{job_id}/run/{run_id}/console git', function (done) {
         var job_id = Store.getJobConfigByName('git');
-        var run_id = Store.getRunByLabel(job_id, 'latest');
+        var run_id = Store.getRunByLabel(job_id, 'last');
         internals.prepareServer(function (server) {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id + '/console' }, function (response) {
 
@@ -232,7 +232,7 @@ describe('api', function () {
 
     it('DELETE /api/job/{job_id}/run/{run_id} git', function (done) {
         var job_id = Store.getJobConfigByName('git');
-        var run_id = Store.getRunByLabel(job_id, 'latest');
+        var run_id = Store.getRunByLabel(job_id, 'last');
         internals.prepareServer(function (server) {
             server.inject({ method: 'DELETE', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
 
