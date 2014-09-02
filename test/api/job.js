@@ -46,7 +46,7 @@ describe('api', function () {
 
             var payload = {
                 name: "badcommand",
-                command: "uptim"
+                command: "uptime"
             };
             server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
 
@@ -56,7 +56,21 @@ describe('api', function () {
                 done();
             });
         });
-    });  
+    });
+
+    it('PUT /api/job/{job_id} badcommand', function (done) {
+        var job_id = Store.getJobConfigByName('badcommand');
+        var payload = { command: "uptim" };
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'PUT', url: '/api/job/'+ job_id, payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.result.updated).to.exist;
+                expect(response.result.command).to.equal('uptim');
+                done();
+            });
+        });
+    });
 
     it('GET /api/job/{job_id}/run badcommand', function (done) {
         var job_id = Store.getJobConfigByName('badcommand');
