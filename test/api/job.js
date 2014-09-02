@@ -64,8 +64,10 @@ describe('api', function () {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
 
                 var lastSuccess_id = Store.getRunByLabel(job_id, 'lastSuccess');
+                var lastFail_id = Store.getRunByLabel(job_id, 'lastFail');
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.run_id).to.exist;
+                expect(lastFail_id).to.exist;
                 expect(lastSuccess_id).to.not.exist;
                 done();
             });
