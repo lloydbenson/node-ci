@@ -74,6 +74,21 @@ describe('api', function () {
         });
     });
 
+    it('GET /api/job/{job_id}/run/{run_id} badcommand', function (done) {
+        var job_id = Store.getJobConfigByName('badcommand');
+        var run_id = Store.getRunByLabel(job_id, 'lastFail');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.result.status).is.equal('failed');
+                expect(response.result.finishTime).is.greaterThan(run_id);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
     it('DELETE /api/job/{job_id} badcommand', function (done) {
         var job_id = Store.getJobConfigByName('badcommand');
         internals.prepareServer(function (server) {
@@ -213,6 +228,8 @@ describe('api', function () {
             server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run/' + run_id }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
+                expect(response.result.status).is.equal('succeeded');
+                expect(response.result.finishTime).is.greaterThan(run_id);
                 expect(response.payload).to.exist;
                 done();
             });
@@ -257,7 +274,6 @@ describe('api', function () {
         });
     });
 
-
     it('DELETE /api/job/{job_id} noscm', function (done) {
         var job_id = Store.getJobConfigByName('noscm');
         internals.prepareServer(function (server) {
@@ -270,30 +286,4 @@ describe('api', function () {
         });
     });
 
-/*
-
-    it('POST /api/job/{job_id}', function (done) {
-        var job_id = Store.getJobConfigByName('git');
-        internals.prepareServer(function (server) {
-            server.inject({ method: 'POST', url: '/api/job/'+ job_id }, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                done();
-            });
-        });
-    });
-
-    it('DELETE /api/job/{job_id}', function (done) {
-        var job_id = Store.getJobConfigByName('git');
-        internals.prepareServer(function (server) {
-            server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                done();
-            });
-        });
-    });
-*/
 });
