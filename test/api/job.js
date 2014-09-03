@@ -40,6 +40,66 @@ describe('api', function () {
         });
     });
 */
+  it('POST /api/job parallelcommand', function (done) {
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                name: "parallelcommand",
+                command: [ "sleep 5", "sleep 2" ]
+            };
+            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                expect(response.result.job_id).to.exist;
+                done();
+            });
+        });
+   });
+
+   it('GET /api/job/{job_id}/run parallelcommand', function (done) {
+        var job_id = Store.getJobConfigByName('parallelcommand');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
+
+                var lastSuccess_id = Store.getRunByLabel(job_id, 'lastSuccess');
+                expect(response.statusCode).to.equal(200);
+                expect(response.result.run_id).to.exist;
+                expect(lastSuccess_id).to.not.exist;
+                done();
+            });
+        });
+    });
+
+    it('DELETE /api/job/{job_id} parallelcommand', function (done) {
+        var job_id = Store.getJobConfigByName('parallelcommand');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
+   it('POST /api/job missingcommand', function (done) {
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                name: "missingcommand"
+            };
+            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                expect(response.result.job_id).to.not.exist;
+                expect(response.result.err).to.exist;
+                done();
+            });
+        });
+   });
+
    it('POST /api/job missingcommand', function (done) {
         internals.prepareServer(function (server) {
 
@@ -55,8 +115,9 @@ describe('api', function () {
                 done();
             });
         });
-    });
+   });
 
+/*
    it('POST /api/job sleep5', function (done) {
         internals.prepareServer(function (server) {
 
@@ -102,6 +163,7 @@ describe('api', function () {
             });
         });
     });
+*/
 
     it('POST /api/job badcmd', function (done) {
         internals.prepareServer(function (server) {
