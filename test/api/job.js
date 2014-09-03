@@ -40,6 +40,51 @@ describe('api', function () {
         });
     });
 */
+   it('POST /api/job sleep5', function (done) {
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                name: "sleep5",
+                command: "sleep 5"
+            };
+            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                expect(response.result.job_id).to.exist;
+                done();
+            });
+        });
+    });
+
+// want to try to abort this
+// maybe background a process that runs every 1s and tries to kill the specific command by the same user?
+// generate bash script with sleep with specific name
+    it('GET /api/job/{job_id}/run sleep5', function (done) {
+        var job_id = Store.getJobConfigByName('sleep5');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
+
+                var lastSuccess_id = Store.getRunByLabel(job_id, 'lastSuccess');
+                expect(response.statusCode).to.equal(200);
+                expect(response.result.run_id).to.exist;
+                expect(lastSuccess_id).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('DELETE /api/job/{job_id} sleep5', function (done) {
+        var job_id = Store.getJobConfigByName('sleep5');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
 
     it('POST /api/job badcmd', function (done) {
         internals.prepareServer(function (server) {
@@ -60,13 +105,26 @@ describe('api', function () {
 
     it('PUT /api/job/{job_id} badcommand', function (done) {
         var job_id = Store.getJobConfigByName('badcmd');
-        var payload = { name: "badcommand", command: "uptim" };
+        var payload = { name: "badcommand" };
         internals.prepareServer(function (server) {
             server.inject({ method: 'PUT', url: '/api/job/'+ job_id, payload: payload }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.updated).to.exist;
                 expect(response.result.name).to.equal('badcommand'); 
+                done();
+            });
+        });
+    });
+
+    it('PUT /api/job/{job_id} badcommand uptim', function (done) {
+        var job_id = Store.getJobConfigByName('badcommand');
+        var payload = { command: "uptim" };
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'PUT', url: '/api/job/'+ job_id, payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.result.updated).to.exist;
                 expect(response.result.command).to.equal('uptim');
                 done();
             });
