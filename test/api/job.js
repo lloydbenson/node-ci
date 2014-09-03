@@ -40,6 +40,23 @@ describe('api', function () {
         });
     });
 */
+   it('POST /api/job missingcommand', function (done) {
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                name: "missingcommand",
+            };
+            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                expect(response.result.job_id).to.not.exist;
+                expect(response.result.err).to.exist;
+                done();
+            });
+        });
+    });
+
    it('POST /api/job sleep5', function (done) {
         internals.prepareServer(function (server) {
 
