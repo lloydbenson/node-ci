@@ -357,6 +357,7 @@ describe('api', function () {
                 expect(response.statusCode).to.equal(200);
                 expect(response.result.status).is.equal('succeeded');
                 expect(response.result.finishTime).is.greaterThan(run_id);
+                expect(response.result.elapsedTime).is.greaterThan(0);
                 expect(response.payload).to.exist;
                 done();
             });
