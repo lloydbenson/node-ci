@@ -161,6 +161,56 @@ describe('api', function () {
         });
     });
 
+    it('POST /api/job invalidscm', function (done) {
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                name: "invalidscm",
+                scm: {
+                    type: 'invalid'
+                },
+                pre: "date",
+                command: "uptime",
+                post: "cat /etc/hosts"
+            };
+            server.inject({ method: 'POST', url: '/api/job', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                expect(response.result.job_id).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('GET /api/job/{job_id}/run invalidscm', function (done) {
+        var job_id = Store.getJobConfigByName('invalidscm');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'GET', url: '/api/job/'+ job_id + '/run'}, function (response) {
+
+                var lastFail_id = Store.getRunByLabel(job_id, 'lastFail');
+                var lastSuccess_id = Store.getRunByLabel(job_id, 'lastSuccess');
+                expect(response.statusCode).to.equal(200);
+                expect(response.result.run_id).to.exist;
+                expect(lastSuccess_id).to.not.exist;
+                expect(lastFail_id).to.exist;
+                done();
+            });
+        });
+    });
+
+    it('DELETE /api/job/{job_id} invalidscm', function (done) {
+        var job_id = Store.getJobConfigByName('invalidscm');
+        internals.prepareServer(function (server) {
+            server.inject({ method: 'DELETE', url: '/api/job/'+ job_id }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                done();
+            });
+        });
+    });
+
     it('POST /api/job noscm', function (done) {
         internals.prepareServer(function (server) {
 
